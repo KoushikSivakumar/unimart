@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product, Shop
 from .forms import ShopForm, ProductForm
+from orders.models import OrderRequest
 
 
 def product_list(request):
@@ -42,16 +43,37 @@ def seller_dashboard(request):
 
     if shop:
         products = Product.objects.filter(shop=shop).order_by('-created_at')
+
+        total_products = products.count()
+        pending_requests = OrderRequest.objects.filter(
+            seller=request.user,
+            status='pending'
+        ).count()
+        accepted_requests = OrderRequest.objects.filter(
+            seller=request.user,
+            status='accepted'
+        ).count()
+        completed_requests = OrderRequest.objects.filter(
+            seller=request.user,
+            status='completed'
+        ).count()
     else:
         products = []
+        total_products = 0
+        pending_requests = 0
+        accepted_requests = 0
+        completed_requests = 0
 
     context = {
         'shop': shop,
         'products': products,
+        'total_products': total_products,
+        'pending_requests': pending_requests,
+        'accepted_requests': accepted_requests,
+        'completed_requests': completed_requests,
     }
 
     return render(request, 'marketplace/seller_dashboard.html', context)
-
 
 @login_required
 def create_shop(request):

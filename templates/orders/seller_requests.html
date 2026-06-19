@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="fw-bold">Incoming Requests</h1>
+        <p class="text-muted mb-0">Students who requested to buy your products.</p>
+    </div>
+
+    <a href="{% url 'marketplace:seller_dashboard' %}" class="btn btn-outline-secondary">
+        Seller Dashboard
+    </a>
+</div>
+
+{% for request_item in requests %}
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h5 class="fw-bold mb-1">
+                        {{ request_item.product.name }}
+                    </h5>
+
+                    <p class="mb-1">
+                        Buyer: {{ request_item.buyer.username }}
+                    </p>
+
+                    {% if request_item.buyer.phone_number %}
+                        <p class="mb-1">
+                            Buyer phone: {{ request_item.buyer.phone_number }}
+                        </p>
+                    {% endif %}
+
+                    <p class="mb-1">
+                        Quantity: {{ request_item.quantity }}
+                    </p>
+
+                    {% if request_item.message %}
+                        <p class="mb-1">
+                            Message: {{ request_item.message }}
+                        </p>
+                    {% endif %}
+
+                    <p class="text-muted small mb-0">
+                        Requested on {{ request_item.created_at }}
+                    </p>
+                </div>
+
+                <div class="text-end">
+                    {% if request_item.status == 'pending' %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    {% elif request_item.status == 'accepted' %}
+                        <span class="badge bg-success">Accepted</span>
+                    {% elif request_item.status == 'rejected' %}
+                        <span class="badge bg-danger">Rejected</span>
+                    {% elif request_item.status == 'completed' %}
+                        <span class="badge bg-dark">Completed</span>
+                    {% endif %}
+
+                    <div class="d-flex gap-2 mt-2">
+                        <a href="{% url 'orders:update_request_status' request_item.id 'accepted' %}" class="btn btn-success btn-sm">
+                            Accept
+                        </a>
+
+                        <a href="{% url 'orders:update_request_status' request_item.id 'rejected' %}" class="btn btn-danger btn-sm">
+                            Reject
+                        </a>
+
+                        <a href="{% url 'orders:update_request_status' request_item.id 'completed' %}" class="btn btn-dark btn-sm">
+                            Complete
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% empty %}
+    <div class="alert alert-info">
+        No incoming requests yet.
+    </div>
+{% endfor %}
+
+{% endblock %}

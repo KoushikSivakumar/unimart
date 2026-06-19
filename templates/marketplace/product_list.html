@@ -2,12 +2,15 @@
 
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h1 class="fw-bold">unimart</h1>
-        <p class="text-muted mb-0">Browse products listed by student sellers.</p>
-    </div>
-</div>
+<section class="page-hero">
+    <p class="mb-2 fw-semibold">Student-run commerce, inside your campus.</p>
+
+    <h1>Discover products from student sellers.</h1>
+
+    <p class="mt-3 mb-0">
+        Browse snacks, thrift drops, art, services, prints, handmade goods, and small student businesses near you.
+    </p>
+</section>
 
 <form method="get" class="row g-2 mb-4">
     <div class="col-md-6">
@@ -40,14 +43,13 @@
 <div class="row">
     {% for product in products %}
         <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100 product-card">
 
                 {% if product.image %}
                     <img 
                         src="{{ product.image.url }}" 
-                        class="card-img-top" 
+                        class="card-img-top product-image" 
                         alt="{{ product.name }}"
-                        style="height: 220px; object-fit: cover;"
                     >
                 {% else %}
                     <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 220px;">

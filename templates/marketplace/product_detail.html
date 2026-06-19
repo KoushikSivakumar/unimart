@@ -55,9 +55,21 @@
             </p>
         {% endif %}
 
-        <a href="#" class="btn btn-success btn-lg mt-3">
+        {% if user.is_authenticated %}
+    {% if user != product.seller %}
+        <a href="{% url 'orders:request_to_buy' product.id %}" class="btn btn-success btn-lg mt-3">
             Request to Buy
         </a>
+    {% else %}
+        <a href="{% url 'marketplace:edit_product' product.id %}" class="btn btn-outline-dark btn-lg mt-3">
+            Edit Your Product
+        </a>
+    {% endif %}
+{% else %}
+    <a href="{% url 'accounts:login' %}" class="btn btn-success btn-lg mt-3">
+        Login to Request
+    </a>
+{% endif %}
     </div>
 </div>
 
