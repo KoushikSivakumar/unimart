@@ -1,69 +1,65 @@
-import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, MapPin, Sparkles, Store } from 'lucide-react';
-import ProductCard from '../components/marketplace/ProductCard.jsx';
-import { getShopById } from '../data/mockProducts.js';
+import { useParams } from "react-router-dom";
+import { AtSign, MapPin } from "lucide-react";
+import { products } from "../data/mockProducts";
+import ProductCard from "../components/marketplace/ProductCard";
 
 export default function ShopPage() {
   const { shopId } = useParams();
-  const shop = getShopById(shopId);
-
-  if (!shop) {
-    return (
-      <div className="page-shell py-12">
-        <div className="soft-card p-8">
-          <p className="text-xl font-black">Shop not found.</p>
-          <Link to="/marketplace" className="mt-5 inline-flex text-sm font-bold underline">
-            Back to marketplace
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  const shopProducts = products.filter((product) => product.shopId === shopId);
+  const seller = shopProducts[0]?.seller || "Student Seller";
 
   return (
-    <div className="page-shell py-8">
-      <Link
-        to="/marketplace"
-        className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-zinc-600 hover:text-zinc-950"
-      >
-        <ArrowLeft size={17} />
-        Back to marketplace
-      </Link>
+    <main className="mx-auto max-w-7xl px-5 py-10">
+      <section className="overflow-hidden rounded-[2rem] border border-neutral-200 bg-white shadow-sm">
+        <div className="h-48 bg-gradient-to-br from-neutral-900 via-neutral-700 to-neutral-400" />
 
-      <section className="soft-card mb-8 p-6 sm:p-8">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
-            <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-zinc-950 text-white">
-              <Store size={28} />
+        <div className="p-6 md:p-8">
+          <div className="-mt-20 mb-5 h-28 w-28 rounded-3xl border-4 border-white bg-neutral-100 shadow-sm" />
+
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <h1 className="text-4xl font-semibold tracking-tight">
+                {seller}
+              </h1>
+
+              <p className="mt-3 max-w-xl leading-7 text-neutral-600">
+                A student-run shop selling handmade goods, study materials,
+                creative services, and campus-friendly products.
+              </p>
+
+              <div className="mt-4 flex flex-wrap gap-3 text-sm text-neutral-500">
+                <span className="inline-flex items-center gap-1">
+                  <MapPin size={15} />
+                  Sathyabama University
+                </span>
+                <span className="inline-flex items-center gap-1">
+                  <AtSign size={15} />
+                  @{seller.toLowerCase().replaceAll(" ", "")}
+                </span>
+              </div>
             </div>
-            <p className="eyebrow">Student storefront</p>
-            <h1 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">
-              {shop.name}
-            </h1>
-            <p className="mt-4 max-w-2xl leading-7 text-zinc-600">
-              Run by {shop.seller}. A compact storefront for campus-friendly
-              products and request-based buying.
-            </p>
-          </div>
 
-          <div className="grid gap-3 text-sm font-bold text-zinc-600 sm:grid-cols-2">
-            <span className="inline-flex items-center gap-2 rounded-full bg-stone-100 px-4 py-3">
-              <MapPin size={17} />
-              {shop.campus}
-            </span>
-            <span className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-3">
-              <Sparkles size={17} />
-              {shop.productCount} listings
-            </span>
+            <button className="rounded-full bg-black px-6 py-3 text-sm font-semibold text-white">
+              Contact seller
+            </button>
           </div>
         </div>
       </section>
 
-      <section className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {shop.products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+      <section className="mt-10">
+        <div className="mb-5 flex items-end justify-between">
+          <div>
+            <p className="text-sm font-medium text-neutral-500">Products</p>
+            <h2 className="text-2xl font-semibold">Available from this shop</h2>
+          </div>
+        </div>
+
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {shopProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
       </section>
-    </div>
+    </main>
   );
 }

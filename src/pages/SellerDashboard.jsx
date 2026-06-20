@@ -1,102 +1,90 @@
-import { Link } from 'react-router-dom';
-import { Eye, MessageSquare, PackagePlus, Pencil, Store } from 'lucide-react';
-import { mockProducts } from '../data/mockProducts.js';
-
-const stats = [
-  { label: 'Active listings', value: '6' },
-  { label: 'Buy requests', value: '12' },
-  { label: 'Pending replies', value: '3' },
-];
+import { Package, Plus, ShoppingBag, Store } from "lucide-react";
+import { products } from "../data/mockProducts";
+import { Link } from "react-router-dom";
 
 export default function SellerDashboard() {
   return (
-    <div className="page-shell py-8">
-      <section className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+    <main className="mx-auto max-w-7xl px-5 py-10">
+      <section className="mb-8 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="eyebrow">Seller dashboard</p>
-          <h1 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">
-            Manage your campus shop.
+          <p className="text-sm font-medium text-neutral-500">Seller dashboard</p>
+          <h1 className="mt-2 text-4xl font-semibold tracking-tight">
+            Manage your shop.
           </h1>
-          <p className="mt-4 max-w-2xl leading-7 text-zinc-600">
-            Track listings, preview your storefront, and handle simple request
-            messages without checkout or payments.
-          </p>
         </div>
 
-        <Link to="/create-shop" className="btn-primary">
-          <PackagePlus size={18} />
+        <Link
+          to="/dashboard/add-product"
+          className="inline-flex w-fit items-center gap-2 rounded-full bg-black px-5 py-3 text-sm font-semibold text-white"
+        >
+          <Plus size={17} />
           Add product
         </Link>
       </section>
 
       <section className="mb-8 grid gap-4 md:grid-cols-3">
-        {stats.map((stat) => (
-          <div key={stat.label} className="soft-card p-6">
-            <p className="text-sm font-bold text-zinc-500">{stat.label}</p>
-            <p className="mt-3 text-4xl font-black">{stat.value}</p>
-          </div>
-        ))}
+        <StatCard icon={<Store size={20} />} label="Shop status" value="Active" />
+        <StatCard icon={<Package size={20} />} label="Products listed" value="4" />
+        <StatCard icon={<ShoppingBag size={20} />} label="Buy requests" value="12" />
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="soft-card p-6">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-3xl bg-zinc-950 text-white">
-                <Store size={24} />
-              </div>
-              <h2 className="text-2xl font-black">Sugar Lab</h2>
-              <p className="mt-3 leading-7 text-zinc-600">
-                Homemade snacks and tiny dessert boxes for hostel study nights.
-              </p>
-            </div>
-            <button className="btn-secondary px-4 py-2">
-              <Pencil size={16} />
-              Edit
-            </button>
-          </div>
-
-          <div className="mt-6 grid gap-3">
-            <Link to="/shop/sugar-lab" className="btn-primary">
-              <Eye size={18} />
-              View storefront
-            </Link>
-            <button className="btn-secondary">
-              <MessageSquare size={18} />
-              View requests
-            </button>
-          </div>
+      <section className="rounded-[2rem] border border-neutral-200 bg-white p-5 shadow-sm">
+        <div className="mb-5 flex items-center justify-between">
+          <h2 className="text-xl font-semibold">Your products</h2>
+          <button className="text-sm font-medium text-neutral-500 hover:text-black">
+            View all
+          </button>
         </div>
 
-        <div className="soft-card overflow-hidden">
-          <div className="border-b border-stone-200 p-5">
-            <h2 className="text-xl font-black">Recent listings</h2>
-          </div>
-          <div className="divide-y divide-stone-200">
-            {mockProducts.slice(0, 4).map((product) => (
-              <div
-                key={product.id}
-                className="grid grid-cols-[72px_1fr_auto] items-center gap-4 p-4"
-              >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-[72px] w-[72px] rounded-2xl object-cover"
-                />
-                <div>
-                  <p className="font-black">{product.name}</p>
-                  <p className="text-sm text-zinc-500">
-                    {product.category} · Rs. {product.price}
-                  </p>
-                </div>
-                <button className="rounded-full border border-stone-300 p-3">
-                  <Pencil size={16} />
-                </button>
-              </div>
-            ))}
-          </div>
+        <div className="overflow-hidden rounded-2xl border border-neutral-200">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-neutral-100 text-neutral-500">
+              <tr>
+                <th className="px-4 py-3 font-medium">Product</th>
+                <th className="px-4 py-3 font-medium">Category</th>
+                <th className="px-4 py-3 font-medium">Price</th>
+                <th className="px-4 py-3 font-medium">Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {products.map((product) => (
+                <tr key={product.id} className="border-t border-neutral-200">
+                  <td className="px-4 py-4">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="h-12 w-12 rounded-xl object-cover"
+                      />
+                      <span className="font-medium">{product.name}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-4 text-neutral-600">{product.category}</td>
+                  <td className="px-4 py-4 font-medium">₹{product.price}</td>
+                  <td className="px-4 py-4">
+                    <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+                      Live
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
+    </main>
+  );
+}
+
+function StatCard({ icon, label, value }) {
+  return (
+    <div className="rounded-3xl border border-neutral-200 bg-white p-5 shadow-sm">
+      <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-neutral-100">
+        {icon}
+      </div>
+      <p className="text-sm text-neutral-500">{label}</p>
+      <h2 className="mt-1 text-2xl font-semibold">{value}</h2>
     </div>
   );
 }

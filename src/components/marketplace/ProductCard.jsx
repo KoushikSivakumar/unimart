@@ -1,53 +1,35 @@
-import { Link } from 'react-router-dom';
-import { MapPin, Store } from 'lucide-react';
+import { Link } from "react-router-dom";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, compact = false }) {
   return (
-    <article className="soft-card group overflow-hidden">
-      <Link to={`/product/${product.id}`} className="block">
-        <div className="aspect-[4/3] overflow-hidden bg-stone-100">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-          />
-        </div>
-      </Link>
-
-      <div className="space-y-4 p-5">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <Link
-              to={`/product/${product.id}`}
-              className="text-lg font-black leading-tight hover:underline"
-            >
-              {product.name}
-            </Link>
-            <p className="mt-1 text-sm text-zinc-500">{product.category}</p>
-          </div>
-          <p className="rounded-full bg-amber-100 px-3 py-1 text-sm font-black text-zinc-950">
-            Rs. {product.price}
-          </p>
-        </div>
-
-        <p className="line-clamp-2 text-sm leading-6 text-zinc-600">
-          {product.description}
-        </p>
-
-        <div className="flex flex-wrap items-center gap-3 text-sm text-zinc-500">
-          <Link
-            to={`/shop/${product.shopId}`}
-            className="inline-flex items-center gap-1.5 font-semibold text-zinc-700 hover:text-zinc-950"
-          >
-            <Store size={15} />
-            {product.shopName}
-          </Link>
-          <span className="inline-flex items-center gap-1.5">
-            <MapPin size={15} />
-            {product.campus}
-          </span>
-        </div>
+    <Link
+      to={`/product/${product.id}`}
+      className="group block overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+    >
+      <div className={compact ? "h-36 overflow-hidden" : "h-56 overflow-hidden"}>
+        <img
+          src={product.image}
+          alt={product.name}
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+        />
       </div>
-    </article>
+
+      <div className="p-4">
+        <div className="mb-2 flex items-center justify-between gap-3">
+          <span className="rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-600">
+            {product.category}
+          </span>
+          <span className="font-semibold">₹{product.price}</span>
+        </div>
+
+        <h3 className="line-clamp-1 font-semibold text-neutral-950">
+          {product.name}
+        </h3>
+
+        <p className="mt-1 text-sm text-neutral-500">
+          by {product.seller}
+        </p>
+      </div>
+    </Link>
   );
 }

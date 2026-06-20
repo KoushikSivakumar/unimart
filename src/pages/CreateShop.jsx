@@ -1,72 +1,64 @@
-import { Camera, CheckCircle2, Store } from 'lucide-react';
-
 export default function CreateShop() {
   return (
-    <div className="page-shell py-8">
-      <section className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
-        <div className="soft-card p-6 sm:p-8">
-          <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-3xl bg-amber-100">
-            <Store size={25} />
-          </div>
-          <p className="eyebrow">Create shop</p>
-          <h1 className="mt-3 text-4xl font-black tracking-tight">
-            Start selling to students.
-          </h1>
-          <p className="mt-4 leading-7 text-zinc-600">
-            This MVP shell keeps shop creation simple: profile, category,
-            campus location, and a friendly storefront preview.
-          </p>
+    <main className="mx-auto max-w-3xl px-5 py-12">
+      <div className="mb-8">
+        <p className="text-sm font-medium text-neutral-500">Seller onboarding</p>
+        <h1 className="mt-2 text-4xl font-semibold tracking-tight">
+          Create your campus shop.
+        </h1>
+        <p className="mt-3 leading-7 text-neutral-600">
+          Set up your public storefront. You can add products after creating your shop.
+        </p>
+      </div>
 
-          <div className="mt-8 space-y-4">
-            {['No payment setup', 'Request-based buying', 'Product-first storefront'].map(
-              (item) => (
-                <p key={item} className="flex items-center gap-3 font-bold">
-                  <CheckCircle2 size={18} />
-                  {item}
-                </p>
-              ),
-            )}
-          </div>
-        </div>
+      <form className="rounded-[2rem] border border-neutral-200 bg-white p-6 shadow-sm">
+        <div className="grid gap-5">
+          <Field label="Shop name" placeholder="Example: PixelForge" />
+          <Field label="Shop tagline" placeholder="Posters, edits, and design work for students" />
+          <Field label="Instagram / contact link" placeholder="@yourshop or phone number" />
 
-        <form className="soft-card space-y-5 p-6 sm:p-8">
-          <div className="grid gap-5 sm:grid-cols-2">
-            <label className="space-y-2">
-              <span className="text-sm font-bold">Shop name</span>
-              <input className="w-full rounded-2xl border border-stone-300 px-4 py-3 outline-none focus:border-zinc-950" />
-            </label>
-            <label className="space-y-2">
-              <span className="text-sm font-bold">Category</span>
-              <input className="w-full rounded-2xl border border-stone-300 px-4 py-3 outline-none focus:border-zinc-950" />
-            </label>
+          <div>
+            <label className="text-sm font-medium">Shop category</label>
+            <select className="mt-2 w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 outline-none focus:border-black">
+              <option>Accessories</option>
+              <option>Study materials</option>
+              <option>Design services</option>
+              <option>Food</option>
+              <option>Art</option>
+              <option>Other</option>
+            </select>
           </div>
 
-          <label className="space-y-2">
-            <span className="text-sm font-bold">Campus location</span>
-            <input className="w-full rounded-2xl border border-stone-300 px-4 py-3 outline-none focus:border-zinc-950" />
-          </label>
-
-          <label className="space-y-2">
-            <span className="text-sm font-bold">Shop description</span>
+          <div>
+            <label className="text-sm font-medium">About your shop</label>
             <textarea
+              placeholder="Tell students what you sell and how they can order."
               rows="5"
-              className="w-full rounded-2xl border border-stone-300 px-4 py-3 outline-none focus:border-zinc-950"
+              className="mt-2 w-full resize-none rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 outline-none focus:border-black"
             />
-          </label>
+          </div>
 
           <button
             type="button"
-            className="flex w-full items-center justify-center gap-2 rounded-3xl border border-dashed border-stone-300 bg-stone-100 px-4 py-8 text-sm font-bold text-zinc-600"
+            className="mt-2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800"
           >
-            <Camera size={18} />
-            Upload shop logo later
+            Create shop
           </button>
+        </div>
+      </form>
+    </main>
+  );
+}
 
-          <button type="button" className="btn-primary w-full">
-            Create shop preview
-          </button>
-        </form>
-      </section>
+function Field({ label, placeholder }) {
+  return (
+    <div>
+      <label className="text-sm font-medium">{label}</label>
+      <input
+        type="text"
+        placeholder={placeholder}
+        className="mt-2 w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 outline-none focus:border-black"
+      />
     </div>
   );
 }

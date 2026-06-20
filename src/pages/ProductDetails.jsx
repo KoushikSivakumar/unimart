@@ -1,77 +1,99 @@
-import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, MessageCircle, ShieldCheck, Store } from 'lucide-react';
-import { getProductById } from '../data/mockProducts.js';
+import { useParams, Link } from "react-router-dom";
+import { ArrowLeft, MessageCircle, Store } from "lucide-react";
+import { products } from "../data/mockProducts";
+import { useState } from "react";
+import RequestModal from "../components/marketplace/RequestModal";
+
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const product = getProductById(id);
+  const product = products.find((item) => item.id === id);
+  const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
 
   if (!product) {
     return (
-      <div className="page-shell py-12">
-        <div className="soft-card p-8">
-          <p className="text-xl font-black">Product not found.</p>
-          <Link to="/marketplace" className="mt-5 inline-flex text-sm font-bold underline">
-            Back to marketplace
-          </Link>
-        </div>
-      </div>
+      <main className="mx-auto max-w-4xl px-5 py-20">
+        <h1 className="text-3xl font-semibold">Product not found</h1>
+        <Link to="/marketplace" className="mt-4 inline-block text-neutral-600">
+          Go back to marketplace
+        </Link>
+      </main>
     );
   }
 
   return (
-    <div className="page-shell py-8">
+    <main className="mx-auto max-w-7xl px-5 py-10">
       <Link
         to="/marketplace"
-        className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-zinc-600 hover:text-zinc-950"
+        className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-neutral-600 hover:text-black"
       >
-        <ArrowLeft size={17} />
+        <ArrowLeft size={16} />
         Back to marketplace
       </Link>
 
-      <section className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="soft-card overflow-hidden">
+      <section className="grid gap-10 md:grid-cols-2">
+        <div className="overflow-hidden rounded-[2rem] border border-neutral-200 bg-white shadow-sm">
           <img
             src={product.image}
             alt={product.name}
-            className="aspect-[4/3] h-full w-full object-cover"
+            className="h-[520px] w-full object-cover"
           />
         </div>
 
-        <div className="soft-card p-6 sm:p-8">
-          <p className="eyebrow">{product.category}</p>
-          <h1 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">
+        <div>
+          <span className="rounded-full bg-white px-4 py-2 text-sm font-medium text-neutral-600 shadow-sm">
+            {product.category}
+          </span>
+
+          <h1 className="mt-5 text-5xl font-semibold tracking-tight">
             {product.name}
           </h1>
-          <p className="mt-4 text-3xl font-black">Rs. {product.price}</p>
-          <p className="mt-5 leading-8 text-zinc-600">{product.description}</p>
 
-          <div className="my-7 grid gap-3 sm:grid-cols-2">
-            <Link to={`/shop/${product.shopId}`} className="rounded-3xl bg-stone-100 p-4">
-              <span className="flex items-center gap-2 text-sm font-bold text-zinc-500">
+          <p className="mt-4 text-3xl font-semibold">₹{product.price}</p>
+
+          <p className="mt-6 max-w-xl text-lg leading-8 text-neutral-600">
+            {product.description}
+          </p>
+
+          <div className="mt-8 rounded-3xl border border-neutral-200 bg-white p-5 shadow-sm">
+            <p className="text-sm text-neutral-500">Sold by</p>
+            <div className="mt-3 flex items-center justify-between">
+              <div>
+                <h2 className="font-semibold">{product.seller}</h2>
+                <p className="text-sm text-neutral-500">{product.college}</p>
+              </div>
+
+              <Link
+                to={`/shop/${product.shopId}`}
+                className="inline-flex items-center gap-2 rounded-full border border-neutral-300 px-4 py-2 text-sm font-medium"
+              >
                 <Store size={16} />
-                Seller
-              </span>
-              <span className="mt-2 block text-lg font-black">{product.shopName}</span>
-            </Link>
-            <div className="rounded-3xl bg-amber-100 p-4">
-              <span className="flex items-center gap-2 text-sm font-bold text-zinc-500">
-                <ShieldCheck size={16} />
-                Status
-              </span>
-              <span className="mt-2 block text-lg font-black">{product.stock}</span>
+                View shop
+              </Link>
             </div>
           </div>
 
-          <button className="btn-primary w-full text-base">
-            <MessageCircle size={19} />
-            Request to buy
-          </button>
-          <p className="mt-3 text-center text-sm text-zinc-500">
-            No payments in the MVP. This sends a simple buy request.
-          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <button
+              onClick={() => setIsRequestModalOpen(true)}
+              className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800"
+            >
+              <MessageCircle size={17} />
+              Request to buy
+            </button>
+
+            <button className="rounded-full border border-neutral-300 bg-white px-6 py-3 text-sm font-semibold">
+              Save product
+            </button>
+          </div>
         </div>
       </section>
-    </div>
+      {isRequestModalOpen && (
+        <RequestModal
+          product={product}
+          onClose={() => setIsRequestModalOpen(false)}
+        />
+      )}
+    </main>
   );
 }

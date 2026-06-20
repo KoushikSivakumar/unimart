@@ -1,80 +1,50 @@
-import { Link, NavLink } from 'react-router-dom';
-import { LayoutDashboard, PlusCircle, ShoppingBag, Store } from 'lucide-react';
-
-const navItems = [
-  { label: 'Marketplace', href: '/marketplace', icon: ShoppingBag },
-  { label: 'Create Shop', href: '/create-shop', icon: PlusCircle },
-  { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-];
+import { Link } from "react-router-dom";
+import { ShoppingBag, Store, User } from "lucide-react";
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 z-40 border-b border-stone-200/80 bg-stone-50/90 backdrop-blur">
-      <nav className="page-shell flex h-20 items-center justify-between gap-4">
-        <Link to="/" className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-950 text-white">
-            <Store size={21} />
-          </span>
-          <span>
-            <span className="block text-lg font-black leading-5">UniMart</span>
-            <span className="hidden text-xs font-medium text-zinc-500 sm:block">
-              Campus marketplace
-            </span>
-          </span>
+    <header className="sticky top-0 z-50 border-b border-neutral-200 bg-[#F7F7F5]/80 backdrop-blur-xl">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
+        <Link to="/" className="flex items-center gap-2 font-semibold tracking-tight">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-black text-white">
+            <ShoppingBag size={18} />
+          </div>
+          <span>CampusCart</span>
         </Link>
 
-        <div className="hidden items-center gap-2 md:flex">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-
-            return (
-              <NavLink
-                key={item.href}
-                to={item.href}
-                className={({ isActive }) =>
-                  [
-                    'inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition',
-                    isActive
-                      ? 'bg-white text-zinc-950 shadow-sm'
-                      : 'text-zinc-600 hover:bg-white hover:text-zinc-950',
-                  ].join(' ')
-                }
-              >
-                <Icon size={17} />
-                {item.label}
-              </NavLink>
-            );
-          })}
+        <div className="hidden items-center gap-7 text-sm text-neutral-600 md:flex">
+          <Link to="/marketplace" className="hover:text-black">
+            Marketplace
+          </Link>
+          <Link to="/create-shop" className="hover:text-black">
+            Start selling
+          </Link>
+          <Link to="/dashboard" className="hover:text-black">
+            Dashboard
+          </Link>
         </div>
 
-        <Link to="/marketplace" className="btn-primary px-4 py-2.5">
-          Browse
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            to="/login"
+            className="hidden rounded-full px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-white md:block"
+          >
+            Login
+          </Link>
+
+          <Link
+            to="/create-shop"
+            className="flex items-center gap-2 rounded-full bg-black px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-neutral-800"
+          >
+            <Store size={16} />
+            Sell
+          </Link>
+
+          <button className="rounded-full border border-neutral-200 bg-white p-2">
+            <User size={17} />
+          </button>
+        </div>
       </nav>
-
-      <div className="page-shell pb-4 md:hidden">
-        <div className="grid grid-cols-3 gap-2">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-
-            return (
-              <NavLink
-                key={item.href}
-                to={item.href}
-                className={({ isActive }) =>
-                  [
-                    'flex items-center justify-center gap-1.5 rounded-full px-3 py-2 text-xs font-bold',
-                    isActive ? 'bg-white text-zinc-950 shadow-sm' : 'text-zinc-600',
-                  ].join(' ')
-                }
-              >
-                <Icon size={15} />
-                {item.label}
-              </NavLink>
-            );
-          })}
-        </div>
-      </div>
     </header>
   );
 }
