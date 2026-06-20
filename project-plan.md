@@ -19,3 +19,9 @@ Later:
 /messages
 /admin
 
+# Production Setup
+
+React frontend on Vercel
+Django API on Render/Railway
+PostgreSQL database
+Cloudinary for images
